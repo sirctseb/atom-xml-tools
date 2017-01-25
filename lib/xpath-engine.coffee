@@ -1,4 +1,4 @@
-XPathEngineResult = require './xpath-engine-result'
+libxmljs = require 'libxmljs'
 
 module.exports =
     class XPathEngine
@@ -9,18 +9,14 @@ module.exports =
             results = []
             if @editor and @editor.getText()
                 text = @editor.getText()
-                xdoc = @parser.parseFromString(text, 'text/xml')
+                xdoc = libxmljs.parseXmlString(text, {noblanks: true})
 
-                try
-                    xpathResult = xdoc.evaluate(query, xdoc, null, 4, null)
-                    while node = xpathResult.iterateNext()
-                        result = new XPathEngineResult(query)
-                        result.value = node.textContent
-                        result.isTerminalNode = node.childNodes.length < 2
-
-                        results.push(result)
-
-                catch
-                    # just...do nothing
+                # TODO pass errors up (can't get to show)
+                xpathResult = xdoc.find(query, {"h": "urn:hl7-org:v3", "xsi": "http://www.w3.org/2001/XMLSchema-instance"})
+                if xpathResult?
+                    results = for result in xpathResult
+                        query: query
+                        value: result.toString()
+                        isTerminalNode: result.type() != 'Element'
 
             return results

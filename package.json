@@ -1,14 +1,19 @@
 {
   "name": "xml-tools",
   "main": "./lib/xml-tools",
-  "version": "0.2.1",
+  "version": "0.2.2-beta",
   "description": "A collection of essential XML utilities.",
-  "repository": "https://github.com/HiddenTemple/atom-xml-tools",
+  "repository": "https://github.com/sirctseb/atom-xml-tools",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
-      "atom-space-pen-views": "latest"
+    "atom-space-pen-views": "latest",
+    "libxmljs": "0.18.4"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.4.13",
+    "electron-rebuild": "^1.5.7"
   }
 }

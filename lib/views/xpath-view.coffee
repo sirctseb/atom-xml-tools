@@ -31,9 +31,7 @@ module.exports =
                 @show()
 
         show: ->
-            console.log(this)
             @panel ?= atom.workspace.addModalPanel(item: this)
-            console.log('hit')
             @panel.show()
 
             @setItems([])
@@ -44,13 +42,7 @@ module.exports =
 
         populateList: ->
             query = @getFilterQuery()
-            values = @engine.selectNodes(query)
-
-            while @items.length > 0
-                @items.pop()
-
-            for value in values
-                @items.push(value)
+            @items = @engine.selectNodes(query)
 
             super
 
