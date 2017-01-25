@@ -13,10 +13,11 @@ module.exports =
 
                 # TODO pass errors up (can't get to show)
                 xpathResult = xdoc.find(query, {"h": "urn:hl7-org:v3", "xsi": "http://www.w3.org/2001/XMLSchema-instance"})
-                if xpathResult?
+                if xpathResult? && xpathResult.length > 0 && xpathResult[0].type() != 'document'
                     results = for result in xpathResult
                         query: query
                         value: result.toString()
                         isTerminalNode: result.type() != 'Element'
+                        line: result.line()
 
             return results

@@ -4,8 +4,9 @@ XPathEngine = require '../xpath-engine'
 module.exports =
     class XPathView extends SelectListView
 
-        constructor: (editor) ->
-            @engine = new XPathEngine(editor)
+        constructor: (@editor) ->
+            @engine = new XPathEngine(@editor)
+            @storeFocusedElement()
             super
 
         initialize: ->
@@ -56,4 +57,5 @@ module.exports =
             return html
 
         confirmed: (item) ->
+            @editor.setCursorBufferPosition([item.line - 1, 0])
             @cancel()
