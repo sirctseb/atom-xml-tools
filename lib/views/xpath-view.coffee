@@ -1,5 +1,6 @@
 {SelectListView, $, $$} = require 'atom-space-pen-views'
 XPathEngine = require '../xpath-engine'
+escape = require 'escape-html'
 
 module.exports =
     class XPathView extends SelectListView
@@ -53,9 +54,21 @@ module.exports =
             if !item.isTerminalNode
                 html += '<strong>[Concatenated]</strong> '
 
-            html += '<span>' + item.value + '</span></li>'
+            if item.value.type() == 'element'
+                line = item.value.line()
+                # text = escape(@editor.lineTextForBufferRow(line - 1))
+                text = escape(item.value.toString())
+
+            if item.value.type() == 'text'
+                text = item.value.text()
+
+            if item.value.type() == 'attribute'
+                text = item.value.value()
+
+            html += '<span>' + text + '</span></li>'
             return html
 
         confirmed: (item) ->
+            # TODO Node.line() is sensitive to blank lines in the file
             @editor.setCursorBufferPosition([item.line - 1, 0])
             @cancel()
